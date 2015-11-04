@@ -1,5 +1,7 @@
 # trivial-build
 
+[![Build Status](https://travis-ci.org/ceramic/trivial-build.svg?branch=master)](https://travis-ci.org/ceramic/trivial-build)
+
 Compile a system into an executable.
 
 # Overview
