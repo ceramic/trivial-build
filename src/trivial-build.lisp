@@ -6,7 +6,7 @@
 
 (defun load-and-build-code (system-name entry-point binary-pathname)
   (list
-   (format nil "(ql:quickload :~A)" system-name)
+   (format nil "(asdf:load-system :~A)" system-name)
    (format nil "(setf uiop:*image-entry-point* #'(lambda () ~A))"
            entry-point)
    (format nil "(uiop:dump-image ~S :executable t
