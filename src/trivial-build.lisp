@@ -6,6 +6,11 @@
 
 (defun load-and-build-code (system-name entry-point binary-pathname)
   (list
+   "(setf *debugger-hook*
+          #'(lambda (c h)
+              (declare (ignore h))
+              (uiop:print-condition-backtrace c)
+              (uiop:quit -1)))"
    (format nil "(ql:quickload :~A)" system-name)
    (format nil "(setf uiop:*image-entry-point* #'(lambda () ~A))"
            entry-point)
