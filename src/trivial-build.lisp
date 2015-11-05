@@ -6,7 +6,7 @@
 
 (defun load-and-build-code (system-name entry-point binary-pathname)
   (list
-   (format nil "(asdf:load-system :~A)" system-name)
+   (format nil "(ql:quickload :~A)" system-name)
    (format nil "(setf uiop:*image-entry-point* #'(lambda () ~A))"
            entry-point)
    (format nil "(uiop:dump-image ~S :executable t
@@ -19,7 +19,8 @@
            (type string entry-point)
            (type pathname binary-pathname))
   (let ((impl-pathname (trivial-exe:executable-pathname))
-        (implementation (lisp-invocation:get-lisp-implementation)))
+        (implementation (lisp-invocation:get-lisp-implementation))
+        (ql-setup (merge-pathnames #p"setup.lisp" ql:*quicklisp-home*)))
     (let* ((args (with-output-to-string (stream)
                    (loop for arg in (load-and-build-code system-name
                                                          entry-point
@@ -28,7 +29,11 @@
                      (format stream " ~A ~S"
                              (lisp-invocation:lisp-implementation-eval-flag implementation)
                              arg))))
-           (command (format nil "~S ~A" (namestring impl-pathname) args)))
+           (command (format nil "~S ~A ~S ~A"
+                            (namestring impl-pathname)
+                            (lisp-invocation:lisp-implementation-load-flag implementation)
+                            (namestring ql-setup)
+                            args)))
       (format t "~&Launch: ~A~%" command)
       (terpri)
       (uiop:run-program command
