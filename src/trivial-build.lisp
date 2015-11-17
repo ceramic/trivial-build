@@ -4,17 +4,16 @@
   (:export :build))
 (in-package :trivial-build)
 
-(defun pre-code ()
-  (list
-   "(setf *debugger-hook*
-          #'(lambda (c h)
-              (declare (ignore h))
-              (uiop:print-condition-backtrace c)
-              (uiop:quit -1)))"))
+(defun extra-flags (system-name entry-point binary-pathnam)
+  (concatenate 'string
+               #+sbcl
+               #|(format nil "--core ~S" sb-int:*core-string*)|#
+               ""))
 
 (defun load-and-build-code (system-name entry-point binary-pathname)
   (list
-   (format nil "(ql:quickload :~A)" system-name)
+   "(setf *debugger-hook* #'(lambda (c h) (declare (ignore h)) (uiop:print-condition-backtrace c) (uiop:quit -1)))"
+   (format nil "(asdf:load-system :~A)" system-name)
    (format nil "(setf uiop:*image-entry-point* #'(lambda () ~A))"
            entry-point)
    (format nil "(uiop:dump-image ~S :executable t
@@ -35,14 +34,14 @@
            (type pathname binary-pathname))
   (let* ((impl-pathname (trivial-exe:executable-pathname))
          (implementation (lisp-invocation:get-lisp-implementation))
-         (ql-setup (merge-pathnames #p"setup.lisp" ql:*quicklisp-home*))
-         (command (format nil "~S ~A ~A ~S ~A"
+         (command (format nil "~S ~{~A ~} ~A ~A ~S ~A"
                           (namestring impl-pathname)
-                          (code-list-to-eval
-                           implementation
-                           (pre-code))
+                          (lisp-invocation:lisp-implementation-flags
+                           implementation)
+                          (extra-flags system-name entry-point binary-pathname)
                           (lisp-invocation:lisp-implementation-load-flag implementation)
-                          (namestring ql-setup)
+                          (namestring (merge-pathnames #p"setup.lisp"
+                                                       ql:*quicklisp-home*))
                           (code-list-to-eval
                            implementation
                            (load-and-build-code system-name entry-point binary-pathname)))))
