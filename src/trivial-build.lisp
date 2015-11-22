@@ -7,8 +7,7 @@
 (defun extra-flags (system-name entry-point binary-pathnam)
   (concatenate 'string
                #+sbcl
-               #|(format nil "--core ~S" sb-int:*core-string*)|#
-               ""))
+               (format nil "--core ~S" sb-int:*core-string*)))
 
 (defun load-and-build-code (system-name entry-point binary-pathname)
   (list
@@ -34,11 +33,11 @@
            (type pathname binary-pathname))
   (let* ((impl-pathname (trivial-exe:executable-pathname))
          (implementation (lisp-invocation:get-lisp-implementation))
-         (command (format nil "~S ~{~A ~} ~A ~A ~S ~A"
+         (command (format nil "~S ~A ~{~A ~} ~A ~S ~A"
                           (namestring impl-pathname)
+                          (extra-flags system-name entry-point binary-pathname)
                           (lisp-invocation:lisp-implementation-flags
                            implementation)
-                          (extra-flags system-name entry-point binary-pathname)
                           (lisp-invocation:lisp-implementation-load-flag implementation)
                           (namestring (merge-pathnames #p"setup.lisp"
                                                        ql:*quicklisp-home*))
