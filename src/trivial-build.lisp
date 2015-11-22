@@ -7,7 +7,8 @@
 (defun extra-flags (system-name entry-point binary-pathnam)
   (concatenate 'string
                #+sbcl
-               (format nil "--core ~S" sb-int:*core-string*)))
+               #|(format nil "--core ~S" sb-int:*core-string*)|#
+               ""))
 
 (defun load-and-build-code (system-name entry-point binary-pathname)
   (list
