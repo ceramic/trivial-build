@@ -2,13 +2,10 @@ language: common-lisp
 sudo: true
 
 install:
+  # Install SBCL
+  - apt-get install sbcl
   # Clone trivial-exe
   - git clone https://github.com/ceramic/trivial-exe ~/lisp/trivial-exe
-
-addons:
-  apt:
-    packages:
-      - sbcl
 
 script:
   - sbcl --noinform
