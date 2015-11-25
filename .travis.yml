@@ -2,6 +2,8 @@ language: common-lisp
 sudo: true
 
 install:
+  # Update
+  - sudo apt-get update
   # Install SBCL
   - sudo apt-get install sbcl curl
   # Clone QL
