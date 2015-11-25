@@ -3,12 +3,18 @@ sudo: true
 
 install:
   # Install SBCL
-  - sudo apt-get install sbcl
+  - sudo apt-get install sbcl curl
+  # Clone QL
+  - curl -O https://beta.quicklisp.org/quicklisp.lisp
+  # Install QL
+  - sbcl --load quicklisp.lisp
+         --eval '(quicklisp-quickstart:install)'
+         --eval '(ql:add-to-init-file)'
   # Clone trivial-exe
   - git clone https://github.com/ceramic/trivial-exe ~/lisp/trivial-exe
 
 script:
-  - sbcl --noinform
+  - sbcl --noinform --disable-debugger
          --eval '(ql:quickload :fiveam)'
          --eval '(setf fiveam:*debug-on-error* t
                        fiveam:*debug-on-failure* t)'
