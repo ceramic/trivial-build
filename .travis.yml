@@ -18,7 +18,7 @@ install:
 script:
   - sbcl --noinform --disable-debugger
          --load ~/quicklisp/setup.lisp
-         --eval '(ql:quickload :fiveam)'
+         --eval '(ql:quickload (list :uiop :fiveam))'
          --eval '(setf fiveam:*debug-on-error* t
                        fiveam:*debug-on-failure* t)'
          --eval '(setf *debugger-hook*
