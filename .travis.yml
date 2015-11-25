@@ -11,12 +11,12 @@ install:
   # Install QL
   - sbcl --load quicklisp.lisp
          --eval '(quicklisp-quickstart:install)'
-         --eval '(ql:add-to-init-file)'
   # Clone trivial-exe
   - git clone https://github.com/ceramic/trivial-exe ~/lisp/trivial-exe
 
 script:
   - sbcl --noinform --disable-debugger
+         --load ~/quicklisp/setup.lisp
          --eval '(ql:quickload :fiveam)'
          --eval '(setf fiveam:*debug-on-error* t
                        fiveam:*debug-on-failure* t)'
