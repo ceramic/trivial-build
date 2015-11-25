@@ -11,6 +11,7 @@ install:
   # Install QL
   - sbcl --load quicklisp.lisp
          --eval '(quicklisp-quickstart:install)'
+         --quit
   # Clone trivial-exe
   - git clone https://github.com/ceramic/trivial-exe ~/lisp/trivial-exe
 
@@ -27,6 +28,7 @@ script:
                      (uiop:quit -1)))'
          --eval '(ql:quickload :trivial-build-test)'
          --eval '(trivial-build-test:run-tests)'
+         --quit
 
 notifications:
   email:
