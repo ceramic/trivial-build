@@ -6,7 +6,9 @@
 
 (defun in-roswell-p ()
   "Are we in a Roswell implementation?"
-  (find ".roswell" (pathname-directory (trivial-exe:executable-pathname))))
+  (find ".roswell"
+        (pathname-directory (trivial-exe:executable-pathname))
+        :test #'string=))
 
 (defun load-and-build-code (system-name entry-point binary-pathname)
   "Return a list of code strings to eval."
