@@ -25,9 +25,9 @@
       (format stream " ~A ~S" eval-flag code))))
 
 (defun boot-and-build (system-name entry-point binary-pathname
-                       impl-flags load-flag eval-flag)
+                       impl-path impl-flags load-flag eval-flag)
   (let ((command (format nil "~S ~{~A ~} ~A ~S ~A"
-                         (namestring (trivial-exe:executable-pathname))
+                         (namestring impl-path)
                          impl-flags
                          load-flag
                          (namestring (merge-pathnames #p"setup.lisp"
@@ -51,12 +51,14 @@
         (boot-and-build system-name
                         entry-point
                         binary-pathname
+                        "ros"
                         '()
                         "-l"
                         "-e")
         (boot-and-build system-name
                         entry-point
                         binary-pathname
+                        (trivial-exe:executable-pathname)
                         (lisp-invocation:lisp-implementation-flags
                          implementation)
                         (lisp-invocation:lisp-implementation-load-flag
