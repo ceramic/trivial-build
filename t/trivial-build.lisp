@@ -20,7 +20,8 @@
     (is-true
      (probe-file path))
     (is
-     (equal (uiop:run-program (namestring path) :output :string)
+     (equal (string-trim (list #\Newline)
+                         (uiop:run-program (namestring path) :output :string))
             "1"))
     (when (probe-file path)
       (delete-file path))))
