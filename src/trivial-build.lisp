@@ -4,7 +4,7 @@
   (:export :build))
 (in-package :trivial-build)
 
-(defun in-roswell-p ()
+(defun roswellp ()
   "Are we in a Roswell implementation?"
   (find ".roswell"
         (pathname-directory (trivial-exe:executable-pathname))
@@ -49,7 +49,7 @@
            (type string entry-point)
            (type pathname binary-pathname))
   (let ((implementation (lisp-invocation:get-lisp-implementation)))
-    (if (in-roswell-p)
+    (if (roswellp)
         (boot-and-build system-name
                         entry-point
                         binary-pathname
