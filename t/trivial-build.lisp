@@ -13,6 +13,7 @@
 (in-suite tests)
 
 (test simple-test
+  (finishes (main))
   (let ((path (asdf:system-relative-pathname :trivial-build #p"t/binary")))
     (finishes
      (trivial-build:build :trivial-build-test "(trivial-build-test:main)" path))
