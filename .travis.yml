@@ -10,6 +10,7 @@ env:
   matrix:
     - LISP=sbcl-bin COVERALLS=true
     - LISP=ccl-bin
+    - LISP=ecl
 
 install:
   # Roswell & coveralls
