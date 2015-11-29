@@ -37,7 +37,7 @@ script:
                     (uiop:print-condition-backtrace c)
                     (uiop:quit -1)))'
         -e '(ql:quickload :trivial-build-test)'
-        -e '(coveralls:with-coveralls ()
+        -e '(coveralls:with-coveralls (:exclude (list "t"))
               (trivial-build-test:run-tests))'
 
 notifications:
