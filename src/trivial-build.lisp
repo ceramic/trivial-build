@@ -31,9 +31,15 @@
   (let ((command (format nil "~S ~{~A ~} ~A ~S ~A"
                          (namestring impl-path)
                          impl-flags
+                         #+quicklisp
                          load-flag
+                         #-quicklisp
+                         ""
+                         #+quicklisp
                          (namestring (merge-pathnames #p"setup.lisp"
                                                       ql:*quicklisp-home*))
+                         #-quicklisp
+                         ""
                          (code-list-to-eval
                           eval-flag
                           (load-and-build-code system-name entry-point binary-pathname)))))
